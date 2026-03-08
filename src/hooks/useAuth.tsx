@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { hasSupabase, supabase } from '@/integrations/supabase/client';
 import { DEMO_USER_ID, DEMO_EMAIL } from '@/lib/mockData';
 
 interface AuthContextType {
@@ -44,6 +44,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    // Demo-off + no Supabase means unauthenticated state on Landing.
+    if (!hasSupabase || !supabase) {
+      setSession(null);
+      setDemoUser(null);
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -65,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    if (isDemo) {
+    if (isDemo || !hasSupabase || !supabase) {
       localStorage.removeItem('ff_demo_mode');
       setIsDemo(false);
       setDemoUser(null);

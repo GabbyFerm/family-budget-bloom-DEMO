@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { hasSupabase, supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
 import { formatSEK } from '@/lib/format';
 import { getDemoCategories, setDemoCategories } from '@/lib/mockData';
@@ -62,6 +62,8 @@ const Settings = () => {
       setCategories(getDemoCategories() as Category[]);
       return;
     }
+
+    if (!hasSupabase || !supabase) return;
 
     const { data } = await supabase
       .from('categories')
@@ -128,6 +130,8 @@ const Settings = () => {
       return;
     }
 
+    if (!hasSupabase || !supabase) return;
+
     if (editingCategory) {
       const { error } = await supabase
         .from('categories')
@@ -169,6 +173,8 @@ const Settings = () => {
       fetchCategories();
       return;
     }
+
+    if (!hasSupabase || !supabase) return;
 
     const { error } = await supabase.from('categories').delete().eq('id', deletingCategory.id);
     if (error) {

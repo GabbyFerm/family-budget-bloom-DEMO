@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '@/integrations/supabase/client';
+import { hasSupabase, supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
@@ -11,9 +11,8 @@ import { Loader2 } from 'lucide-react';
 
 const Landing = () => {
   const { loginAsDemo } = useAuth();
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(DEMO_EMAIL);
+  const [password, setPassword] = useState(DEMO_PASSWORD);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,28 +20,31 @@ const Landing = () => {
     setLoading(true);
 
     try {
-      // Demo login bypass
-      if (email.toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
+      const normalizedEmail = email.trim().toLowerCase();
+      const isDemoAccount = normalizedEmail === DEMO_EMAIL && password === DEMO_PASSWORD;
+
+      // In demo-only builds, only the mock credentials should authenticate.
+      if (!hasSupabase || !supabase) {
+        if (!isDemoAccount) {
+          toast.error('Fel demo-uppgifter. Anvand demo-kontot som ar ifyllt.');
+          return;
+        }
         loginAsDemo();
         toast.success('Inloggad som demo!');
         return;
       }
 
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success('Inloggad!');
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin },
-        });
-        if (error) throw error;
-        toast.success('Konto skapat! Kontrollera din e-post för att verifiera.');
+      if (isDemoAccount) {
+        loginAsDemo();
+        toast.success('Inloggad som demo!');
+        return;
       }
+
+      const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
+      if (error) throw error;
+      toast.success('Inloggad!');
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Nagot gick fel';
+      const message = error instanceof Error ? error.message : 'Något gick fel';
       toast.error(message);
     } finally {
       setLoading(false);
@@ -129,7 +131,7 @@ const Landing = () => {
                 }}
                 className="text-xs text-muted-foreground/60 hover:text-primary transition-colors"
               >
-                Testa med demo-konto →
+                Auto fyll i demo konto →
               </button>
             </div>
           </div>

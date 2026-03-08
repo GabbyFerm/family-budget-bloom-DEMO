@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { hasSupabase, supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
 import { formatSEK } from '@/lib/format';
 import { getDemoCategories, getDemoEntries, getDemoSavings } from '@/lib/mockData';
@@ -69,6 +69,11 @@ const YearlySummary = () => {
       setCategories(allCats);
       setEntries(allE.filter((e) => e.month_year.startsWith(String(year))));
       setSavings(getDemoSavings());
+      setLoading(false);
+      return;
+    }
+
+    if (!hasSupabase || !supabase) {
       setLoading(false);
       return;
     }

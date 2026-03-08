@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { hasSupabase, supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
 import { formatSEK, getCurrentMonthYear, getAdjacentMonth } from '@/lib/format';
 import {
@@ -102,6 +102,12 @@ const Dashboard = () => {
       return;
     }
 
+    if (!hasSupabase || !supabase) {
+      setLoading(false);
+      toast.error('Supabase ar avstangt i demolage.');
+      return;
+    }
+
     const [catRes, entRes, savRes] = await Promise.all([
       supabase.from('categories').select('*').eq('user_id', user.id).order('sort_order'),
       supabase
@@ -186,6 +192,7 @@ const Dashboard = () => {
       fetchData();
       return;
     }
+    if (!hasSupabase || !supabase) return;
     const existing = entries.find((e) => e.category_id === categoryId);
     if (existing) {
       await supabase
@@ -214,6 +221,7 @@ const Dashboard = () => {
       fetchData();
       return;
     }
+    if (!hasSupabase || !supabase) return;
     await supabase.from('categories').update({ name: newName.trim() }).eq('id', cat.id);
     fetchData();
   };
@@ -226,6 +234,7 @@ const Dashboard = () => {
       fetchData();
       return;
     }
+    if (!hasSupabase || !supabase) return;
     await supabase.from('monthly_entries').delete().eq('category_id', cat.id);
     await supabase.from('categories').delete().eq('id', cat.id);
     toast.success('Kategori borttagen');
@@ -269,6 +278,7 @@ const Dashboard = () => {
       fetchData();
       return;
     }
+    if (!hasSupabase || !supabase) return;
     const { data: newCat } = await supabase
       .from('categories')
       .insert({
@@ -322,6 +332,7 @@ const Dashboard = () => {
       setSavings(newTotal);
       return;
     }
+    if (!hasSupabase || !supabase) return;
     const { data: existing } = await supabase
       .from('savings_total')
       .select('id')
@@ -390,6 +401,7 @@ const Dashboard = () => {
       fetchData();
       return;
     }
+    if (!hasSupabase || !supabase) return;
     const { data: prevEntries } = await supabase
       .from('monthly_entries')
       .select('*')
