@@ -33,7 +33,7 @@ Family Budget Bloom was born out of a need to move away from static Excel sheets
 ## 📦 How to Explore the Demo
 
 **Option 1: Live Demo**
-1. Visit the Live URL: [Insert Your Deployment URL Here]
+1. Visit the Live URL: [[FamilyBudgetBloomDEMO](https://family-budget-bloom-demo.vercel.app/)]
 2. The demo credentials are pre-filled on the landing page
 3. Click "Logga in" to enter the demo mode
 
