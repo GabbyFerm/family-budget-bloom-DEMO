@@ -4,81 +4,69 @@ A high-performance, real-time financial dashboard designed to replace complex ho
 
 ## ✨ About the Project
 
+**Built with Vibe Coding during International Women's Day SheBuilds Celebration 🎉**
+
+This project was vibecoded in a single day as part of the SheBuilds celebration for International Women's Day 2026. After building the full-featured application with vibe coding and Supabase integration, I saved it to GitHub, then created two separate repositories locally:
+
+1. **Private Production App** - Connected to Supabase with real authentication and PostgreSQL backend
+2. **This Demo Variant** - Standalone showcase version with mock data and zero configuration required
+
+**Note**: This repository is the demo showcase version. It features an automated "Zero-Config Demo Mode" that uses Mock Data and LocalStorage instead of a live Supabase backend, allowing for instant exploration without account creation.
+
 Family Budget Bloom was born out of a need to move away from static Excel sheets toward a dynamic, shared household economy tool. The application provides a high-density UI for granular monthly tracking alongside an automated yearly overview to visualize long-term financial growth.
 
 ## 🚀 Key Technical Highlights
 
-- **Automated Savings Triggers**: Engineered custom PostgreSQL functions and triggers in Supabase to automatically recalculate total wealth whenever a savings entry is modified, ensuring real-time data integrity.
-- **Shared Household Architecture**: Implemented a relational schema using Row Level Security (RLS) that auto-assigns users to "households," allowing for secure, real-time collaboration between partners.
+- **Automated Savings Triggers**: Engineered a custom Auth Provider and Supabase client wrapper that detects missing API keys and seamlessly pivots the entire application into a "Mock Data" state.
 - **High-Density Dashboard**: Designed a custom 3-column desktop layout utilizing CSS Grid to maximize vertical efficiency, including logic to split long expense lists into parallel sub-columns.
 - **Intelligent Financial "Sweep"**: Built logic to "sweep" monthly surpluses into long-term savings, automating the transition between fiscal months and updating cumulative goals.
+- **Relational Schema (Production Version)**: The original production app utilizes a PostgreSQL schema with Row Level Security (RLS) to manage shared household access.
 
 ## 🛠 Technologies
 
 - **Frontend**: React 18, TypeScript, Vite
 - **UI & Styling**: Tailwind CSS, shadcn/ui, Radix UI, Lucide Icons
-- **Backend & Database**: Supabase (PostgreSQL), Row Level Security (RLS)
 - **State Management**: TanStack Query (React Query)
 - **Charts**: Recharts
+- **Production Backend (Reference)**: Supabase (PostgreSQL), RLS
 
-## 📦 Getting Started
+## 📦 How to Explore the Demo
 
-### Prerequisites
+**Option 1: Live Demo**
+1. Visit the Live URL: [Insert Your Deployment URL Here]
+2. The demo credentials are pre-filled on the landing page
+3. Click "Logga in" to enter the demo mode
 
-- Node.js (v18 or higher)
-- npm or bun
-- A Supabase account
+**Option 2: Run Locally**
+```bash
+npm install
+npm run dev
+```
 
-### Installation
-
-1. **Clone the repository**
-
-   ```sh
-   git clone https://github.com/GabbyFerm/family-budget-bloom.git
-   cd family-budget-bloom
-   ```
-
-2. **Install dependencies**
-
-   ```sh
-   npm install
-   ```
-
-3. **Environment setup**
-
-   Create a `.env.local` file in the root directory:
-
-   ```env
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Run locally**
-   ```sh
-   npm run dev
-   ```
+**Demo Features:**
+- Pre-filled demo credentials (`demo@portfolio.com` / `demo123`)
+- Mock data with 3 months of sample transactions
+- Changes persist to browser LocalStorage for a realistic experience
+- No Supabase configuration needed (runs in pure demo mode)
 
 ## 📜 Available Scripts
 
 - **`npm run dev`** - Starts the development server
 - **`npm run build`** - Optimizes the application for production deployment
-- **`npm run preview`** - Locally previews the production build
-- **`npm run test`** - Executes the Vitest suite for logic verification
+- **`npm run lint`** - Executes ESLint to ensure code quality and type safety
 
-## 🔒 Security & Deployment
+## 🔒 Production Version (Reference)
 
-### Database Setup
+The private production version of this app uses:
 
-Run the SQL migrations found in `supabase/migrations/` in your Supabase SQL editor to set up the tables and RLS policies.
+- **Database**: PostgreSQL via Supabase with RLS (migrations available in `supabase/migrations/`)
+- **Authentication**: Supabase Auth with custom triggers for household assignment
+- **Deployment**: Vercel with environment variable protection
 
-### Authentication
-
-Powered by Supabase Auth with custom triggers for automatic household assignment upon user registration.
-
-### Deployment
-
-Optimized for Vercel with HTTPS encryption and environment variable protection.
+**Demo Mode (This Repo)**:
+- Runs without Supabase by default
+- To enable Supabase in this repo, set `VITE_USE_SUPABASE=true` in your `.env` file along with your Supabase credentials
 
 ## 📄 License
 
-**Private Project** - All Rights Reserved
+**Personal Portfolio Project** - All Rights Reserved
