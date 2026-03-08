@@ -33,17 +33,20 @@ Family Budget Bloom was born out of a need to move away from static Excel sheets
 ## 📦 How to Explore the Demo
 
 **Option 1: Live Demo**
+
 1. Visit the Live URL: [[FamilyBudgetBloomDEMO](https://family-budget-bloom-demo.vercel.app/)]
 2. The demo credentials are pre-filled on the landing page
 3. Click "Logga in" to enter the demo mode
 
 **Option 2: Run Locally**
+
 ```bash
 npm install
 npm run dev
 ```
 
 **Demo Features:**
+
 - Pre-filled demo credentials (`demo@portfolio.com` / `demo123`)
 - Mock data with 3 months of sample transactions
 - Changes persist to browser LocalStorage for a realistic experience
@@ -64,6 +67,7 @@ The private production version of this app uses:
 - **Deployment**: Vercel with environment variable protection
 
 **Demo Mode (This Repo)**:
+
 - Runs without Supabase by default
 - To enable Supabase in this repo, set `VITE_USE_SUPABASE=true` in your `.env` file along with your Supabase credentials
 

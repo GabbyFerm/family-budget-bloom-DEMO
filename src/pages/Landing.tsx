@@ -40,7 +40,10 @@ const Landing = () => {
         return;
       }
 
-      const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
       if (error) throw error;
       toast.success('Inloggad!');
     } catch (error: unknown) {
