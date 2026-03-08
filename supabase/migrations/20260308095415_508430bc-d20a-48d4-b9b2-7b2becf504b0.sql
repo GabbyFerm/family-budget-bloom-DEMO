@@ -1,0 +1,2 @@
+ALTER TABLE public.categories DROP CONSTRAINT categories_type_check;
+ALTER TABLE public.categories ADD CONSTRAINT categories_type_check CHECK (type IN ('income', 'fixed_expense', 'variable_expense', 'savings'));
